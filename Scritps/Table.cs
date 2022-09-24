@@ -151,7 +151,7 @@ public class Table : Node2D
 		{
 			srcColumn.Remove(_currentlyMovedCardId);
 			dstColumn.Add(_currentlyMovedCardId);
-			movedCard.Position = new Vector2(_currentCards[id].ColumnId * CardWidth, dstColumn.Count * VerticalOffset) + _cardStartPosition.Position;
+			movedCard.Position = new Vector2(_currentCards[id].ColumnId * CardWidth, (dstColumn.Count - 1) * VerticalOffset) + _cardStartPosition.Position;
 			//re-add child node so that it would be put lower in the scene tree and would not mess with rendering and button presses
 			RemoveChild(movedCard);
 			AddChild(movedCard);
