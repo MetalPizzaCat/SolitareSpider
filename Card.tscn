@@ -13,10 +13,10 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 64, 89 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = -20.0
-margin_top = -10.0
-margin_right = 20.0
-margin_bottom = 4.0
+margin_left = -29.0909
+margin_top = -43.6364
+margin_right = 10.9091
+margin_bottom = -29.6364
 
 [node name="Button" type="Button" parent="."]
 margin_left = -32.0
@@ -27,3 +27,4 @@ flat = true
 
 [connection signal="button_down" from="Button" to="." method="_onMouseDown"]
 [connection signal="button_up" from="Button" to="." method="_onMouseUp"]
+[connection signal="pressed" from="Button" to="." method="_onButtonPressed"]

@@ -18,7 +18,7 @@ texture = ExtResource( 1 )
 position = Vector2( 520, 304 )
 
 [node name="DeckDealingAnimationTimer" type="Timer" parent="."]
-wait_time = 0.1
+wait_time = 0.05
 one_shot = true
 
 [node name="Node2D" type="Node2D" parent="."]

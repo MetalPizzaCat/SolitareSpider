@@ -11,6 +11,27 @@ public class CardInfo
         CardNumericalValue = cardNumericalValue;
         Suit = suit;
     }
+    public int CardValue
+    {
+        get
+        {
+            switch (CardType)
+            {
+                case CardType.Number:
+                    return CardNumericalValue;
+                case CardType.Atlas:
+                    return 0;
+                case CardType.Jester:
+                    return 11;
+                case CardType.Queen:
+                    return 12;
+                case CardType.King:
+                    return 13;
+                default:
+                    return -1;
+            }
+        }
+    }
     public CardInfo() { }
 
     public override string ToString()

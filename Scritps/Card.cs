@@ -20,6 +20,9 @@ public enum CardSuit
 
 public class Card : Node2D
 {
+	[Signal]
+	public delegate void CardPressed(int cardId);
+
 	private CardInfo _info;
 	public CardInfo Info => _info;
 
@@ -27,6 +30,11 @@ public class Card : Node2D
 	private bool _revealed = false;
 
 	private bool _followsMouse = false;
+
+	private int _id = -1;
+	public int ColumnId = -1;
+
+	public int Id => _id;
 
 	public bool Revealed
 	{
@@ -48,9 +56,11 @@ public class Card : Node2D
 	private Label _debugCardNameLabel;
 	private Sprite _cardSprite;
 
-	public void Init(CardInfo info)
+	public void Init(CardInfo info, int id, int column)
 	{
 		_info = info;
+		_id = id;
+		ColumnId = column;
 	}
 	public override void _Ready()
 	{
@@ -72,12 +82,16 @@ public class Card : Node2D
 
 	private void _onMouseDown()
 	{
-		_followsMouse = true;
+		//_followsMouse = true;
 	}
 
 	private void _onMouseUp()
 	{
-		_followsMouse = false;
+		//_followsMouse = false;
 	}
 
+	private void _onButtonPressed()
+	{
+		EmitSignal(nameof(CardPressed), _id);
+	}
 }
