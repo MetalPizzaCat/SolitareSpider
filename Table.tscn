@@ -1,14 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/titan_v2 (copy).png" type="Texture" id=1]
-[ext_resource path="res://EmptyColumnButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/card.png" type="Texture" id=2]
 [ext_resource path="res://Scritps/Table.cs" type="Script" id=3]
 [ext_resource path="res://Card.tscn" type="PackedScene" id=4]
+[ext_resource path="res://EmptyColumnButton.tscn" type="PackedScene" id=5]
 
 [node name="Table" type="Node2D"]
 script = ExtResource( 3 )
 CardScene = ExtResource( 4 )
-EmptyColumnButtonScene = ExtResource( 2 )
+EmptyColumnButtonScene = ExtResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 496, 304 )
@@ -22,10 +23,47 @@ position = Vector2( 520, 304 )
 wait_time = 0.05
 one_shot = true
 
+[node name="CardDealingAnimationTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2( -16, 16 )
+position = Vector2( 896, 528 )
+
+[node name="Sprite" type="Sprite" parent="Node2D"]
+position = Vector2( 10.3372, -17.5094 )
+scale = Vector2( 1.375, 1.375 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 64, 89 )
+
+[node name="Sprite2" type="Sprite" parent="Node2D"]
+position = Vector2( 18.3371, -17.5094 )
+rotation = 0.261799
+scale = Vector2( 1.375, 1.375 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 64, 89 )
+
+[node name="Sprite3" type="Sprite" parent="Node2D"]
+position = Vector2( 26.337, -17.5095 )
+rotation = -0.261799
+scale = Vector2( 1.375, 1.375 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 64, 89 )
+
+[node name="Button" type="Button" parent="Node2D"]
+margin_left = -40.0
+margin_top = -88.0
+margin_right = 88.0
+margin_bottom = 56.0
+mouse_default_cursor_shape = 2
+flat = true
 
 [node name="CardStartPosition" type="Position2D" parent="."]
 position = Vector2( 72, 104 )
 
 [connection signal="timeout" from="DeckDealingAnimationTimer" to="." method="_onAnimationTimerTimeout"]
+[connection signal="timeout" from="CardDealingAnimationTimer" to="." method="_onCardDealingAnimationTimerTimeout"]
+[connection signal="pressed" from="Node2D/Button" to="." method="_onAddMoreCardsButtonPressed"]

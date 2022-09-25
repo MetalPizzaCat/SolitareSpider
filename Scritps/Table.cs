@@ -22,25 +22,23 @@ public class Table : Node2D
 {
     [Export]
     public readonly int DeckSize = 104;
-
     [Export]
     public readonly int CardWidth = 96;
-
     [Export]
     public readonly int VerticalOffset = 15;
-
     [Export]
     public readonly PackedScene CardScene;
-
     [Export]
     public readonly PackedScene EmptyColumnButtonScene;
 
     private Position2D _cardStartPosition;
+    private Vector2 _cardSpawnPosition = Vector2.Zero;
 
     private TableState _state = TableState.Idle;
     public TableState State => _state;
 
     private Timer _animationTimer;
+    private Timer _cardDealAnimTimer;
     private List<CardInfo> _deck = new List<CardInfo>();
     /// <summary>
     /// Array of size 10 of dynamic arrays of cards
@@ -56,10 +54,11 @@ public class Table : Node2D
     /// <typeparam name="Card">Interactive card object itself</typeparam>
     private Dictionary<int, Card> _currentCards = new Dictionary<int, Card>();
 
-    private int _currentInitialDealCardId = 0;
+    private int _lastDealtCard = 0;
     private int _initialDealColumnId = 0;
-
     private int _currentlyMovedCardId = -1;
+
+    private int _currentCardDealCount = 0;
     private void _generateDeck()
     {
         //spider uses two 52 card decks
@@ -97,17 +96,18 @@ public class Table : Node2D
     /// </summary>
     private void _dealInitialDeck()
     {
-        if (_currentInitialDealCardId < 54) // rules of the game define that it deals 54 cards first
+        if (_lastDealtCard < 54) // rules of the game define that it deals 54 cards first
         {
             Card card = CardScene.Instance<Card>();
-            card.Init(_deck[_currentInitialDealCardId], _currentInitialDealCardId, _initialDealColumnId);
+            card.Init(_deck[_lastDealtCard], _lastDealtCard, _initialDealColumnId);
             AddChild(card);
             card.Connect(nameof(Card.CardPressed), this, nameof(_onCardPressed));
-            card.Position = new Vector2(_initialDealColumnId * CardWidth, (_currentInitialDealCardId / 10) * VerticalOffset) + _cardStartPosition.Position;
-            _currentCards.Add(_currentInitialDealCardId, card);
-            _columns[_initialDealColumnId].Add(_currentInitialDealCardId);
+            card.Position = _cardSpawnPosition;
+            card.MoveTo(new Vector2(_initialDealColumnId * CardWidth, (_lastDealtCard / 10) * VerticalOffset) + _cardStartPosition.Position);
+            _currentCards.Add(_lastDealtCard, card);
+            _columns[_initialDealColumnId].Add(_lastDealtCard);
             _initialDealColumnId++;
-            _currentInitialDealCardId++;
+            _lastDealtCard++;
 
             if (_initialDealColumnId >= 10)
             {
@@ -132,7 +132,7 @@ public class Table : Node2D
         //cards that already have cards on top of them are not valid destinations
         return _columns[_currentCards[id].ColumnId].IndexOf(id) == (_columns[_currentCards[id].ColumnId].Count - 1);
 #else
-        return true;
+		return true;
 #endif
 
     }
@@ -269,6 +269,8 @@ public class Table : Node2D
     {
         _animationTimer = GetNode<Timer>("DeckDealingAnimationTimer");
         _cardStartPosition = GetNode<Position2D>("CardStartPosition");
+        _cardDealAnimTimer = GetNode<Timer>("CardDealingAnimationTimer");
+        _cardSpawnPosition = GetNode<Node2D>("Node2D").Position;
         for (int i = 0; i < 10; i++)
         {
             _columns[i] = new List<int>();
@@ -288,12 +290,44 @@ public class Table : Node2D
     {
         if (_currentlyMovedCardId != -1)
         {
-            _moveCards(_currentlyMovedCardId , id);
+            _moveCards(_currentlyMovedCardId, id);
         }
     }
 
     private void _onAnimationTimerTimeout()
     {
         _dealInitialDeck();
+    }
+    private void _onAddMoreCardsButtonPressed()
+    {
+        foreach (List<int> column in _columns)
+        {
+            if (column.Count == 0)
+            {
+                GD.Print("Can request more cards only if all columns have cards");
+                return;
+            }
+        }
+        _cardDealAnimTimer.Start();
+    }
+
+    private void _onCardDealingAnimationTimerTimeout()
+    {
+        if (_currentCardDealCount < 10 && _lastDealtCard < _deck.Count)
+        {
+            Card card = CardScene.Instance<Card>();
+            card.Init(_deck[_lastDealtCard], _lastDealtCard, _currentCardDealCount, true);
+            card.Position = _cardSpawnPosition;
+            card.MoveTo(new Vector2(_currentCardDealCount * CardWidth, _columns[_currentCardDealCount].Count * VerticalOffset) + _cardStartPosition.Position);
+            AddChild(card);
+            _columns[_currentCardDealCount].Add(_lastDealtCard);
+            _cardDealAnimTimer.Start();
+            _lastDealtCard++;
+            _currentCardDealCount++;
+        }
+        else
+        {
+            _currentCardDealCount = 0;
+        }
     }
 }
