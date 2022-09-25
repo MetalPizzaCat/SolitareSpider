@@ -2,7 +2,10 @@
 	Main file of the game where most of the game logic is contained
 */
 //Uncomment this define to remove all placement validity checks
-//#define DEBUG_CARD_LOOSE_CHECK
+#define DEBUG_CARD_LOOSE_CHECK
+
+//Uncomment to make additionally cards get immediately get deleted once spawned
+//#define DEBUG_SUICIDE_CARDS
 
 using Godot;
 using System;
@@ -98,7 +101,7 @@ public class Table : Node2D
         AddChild(card);
         card.Connect(nameof(Card.CardPressed), this, nameof(_onCardPressed));
         card.Position = _cardSpawnPosition;
-		card.MoveTo(destination);
+        card.MoveTo(destination);
         _currentCards.Add(id, card);
         _columns[column].Add(id);
     }
@@ -142,7 +145,7 @@ public class Table : Node2D
         //cards that already have cards on top of them are not valid destinations
         return _columns[_currentCards[id].ColumnId].IndexOf(id) == (_columns[_currentCards[id].ColumnId].Count - 1);
 #else
-		return true;
+        return true;
 #endif
 
     }
@@ -212,6 +215,49 @@ public class Table : Node2D
     }
 
     /// <summary>
+    /// Checks if all cards from id to the last one in the column form proper order
+    /// </summary>
+    /// <param name="id">Id of the card to start the check from, index must be taken from column and not the card id</param>
+    /// <param name="column">Id of the column</param>
+    /// <returns>true if all cards from id to the last one in the column form proper order</returns>
+    private bool _isFullDeck(int id, int column)
+    {
+        //there must be 12 cards
+        //anything more means there is something on top of the column
+        //anything less means there is not enough cards to form a deck
+        if (_columns[column].Count() - 1 - id != 12)
+        {
+            return false;
+        }
+        //proper order is king,queen,jester,10,9,8,7,6,5,4,3,2,atlas
+        if (_currentCards[_columns[column][id]].Info.CardType != CardType.King)
+        {
+            return false;
+        }
+        for (int i = 1; i < 12; i++)
+        {
+            //every card must be one unit smaller then previous one
+            if (_currentCards[_columns[column][i + id]].Info.CardValue != _currentCards[_columns[column][i + id - 1]].Info.CardValue - 1)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void _checkColumn(int column)
+    {
+        for (int i = 0; i < _columns[column].Count; i++)
+        {
+            if (_isFullDeck(i, column))
+            {
+                //TODO: Make cards go die when deck is completed
+                GD.Print("You collected full deck!");
+            }
+        }
+    }
+
+    /// <summary>
     /// Moves a card(and every card below it) to the row of the dstCard
     /// </summary>
     /// <param name="dstCardId"></param>
@@ -261,6 +307,7 @@ public class Table : Node2D
         {
             _currentCards[srcColumn.Last()].Revealed = true;
         }
+        _checkColumn(columnId);
 
     }
 
@@ -273,6 +320,14 @@ public class Table : Node2D
         {
             _currentCards[_columns[i].Last()].Revealed = true;
         }
+#if DEBUG_SUICIDE_CARDS
+        for (int i = 0; i < 10; i++)
+        {
+            _currentCards[_columns[i].Last()].MoveTo(GetNode<Node2D>("FinalDestinationLocation").Position);
+            _currentCards[_columns[i].Last()].MarkForDeletion();
+            _currentCards.Remove(_columns[i].Last());
+        }
+#endif
     }
 
     public override void _Ready()
@@ -301,6 +356,7 @@ public class Table : Node2D
         if (_currentlyMovedCardId != -1)
         {
             _moveCards(_currentlyMovedCardId, id);
+            _currentlyMovedCardId = -1;
         }
     }
 

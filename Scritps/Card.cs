@@ -52,7 +52,12 @@ public class Card : Node2D
     public int ColumnId = -1;
 
     public int Id => _id;
+    private bool _pendingKill = false;
 
+    public void MarkForDeletion()
+    {
+        _pendingKill = true;
+    }
 
     public bool Revealed
     {
@@ -140,6 +145,10 @@ public class Card : Node2D
         {
             Position = _destination;
             _moving = false;
+            if (_pendingKill)
+            {
+                QueueFree();
+            }
         }
     }
 
