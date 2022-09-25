@@ -60,11 +60,30 @@ public class Card : Node2D
 			if (value)
 			{
 				_cardSprite.RegionRect = new Rect2(new Vector2(_revealed ? 64 : 0, 0), _cardSprite.RegionRect.Size);
-				if (_revealed)
+				string val = _info.CardType == CardType.Number ? _info.CardNumericalValue.ToString() : _info.CardType.ToString();
+				_cardValueTopLabel.Text = val;
+				_cardValueBottomLabel.Text = val;
+				int offset = 0;
+				switch (Info.Suit)
 				{
-					_debugCardNameLabel.Text = _info.CardType == CardType.Number ? _info.CardNumericalValue.ToString() : _info.CardType.ToString();
+					case CardSuit.Diamond:
+						offset = 64 * 2;
+						break;
+					case CardSuit.Club:
+						offset = 64;
+						break;
+					case CardSuit.Heart:
+						offset = 64 * 3;
+						break;
+					case CardSuit.Spade:
+						offset = 0;
+						break;
 				}
+				_suitSprite.RegionRect = new Rect2(new Vector2(offset, 0), new Vector2(64, 89));
 			}
+			_suitSprite.Visible = value;
+			_cardValueBottomLabel.Visible = value;
+			_cardValueTopLabel.Visible = value;
 		}
 	}
 
@@ -72,8 +91,10 @@ public class Card : Node2D
 	private Vector2 _destination = Vector2.Zero;
 	private Vector2 _movementVector = Vector2.Zero;
 
-	private Label _debugCardNameLabel;
+	private Label _cardValueTopLabel;
+	private Label _cardValueBottomLabel;
 	private Sprite _cardSprite;
+	private Sprite _suitSprite;
 
 	public void Init(CardInfo info, int id, int column)
 	{
@@ -83,8 +104,12 @@ public class Card : Node2D
 	}
 	public override void _Ready()
 	{
-		_debugCardNameLabel = GetNode<Label>("Label");
+		_cardValueTopLabel = GetNode<Label>("Label");
+		_cardValueBottomLabel = GetNode<Label>("Label2");
 		_cardSprite = GetNode<Sprite>("Sprite");
+		_suitSprite = GetNode<Sprite>("SuitSprite");
+
+		Revealed = false;
 	}
 
 	public override void _Input(InputEvent @event)
