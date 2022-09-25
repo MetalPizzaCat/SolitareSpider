@@ -18,6 +18,9 @@ public enum CardSuit
 	Spade
 }
 
+/// <summary>
+/// Card is a representation of the actual card in the game
+/// </summary>
 public class Card : Node2D
 {
 	[Signal]

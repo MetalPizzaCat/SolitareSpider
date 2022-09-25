@@ -1,13 +1,14 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/titan_v2 (copy).png" type="Texture" id=1]
-[ext_resource path="res://Assets/card.png" type="Texture" id=2]
+[ext_resource path="res://EmptyColumnButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scritps/Table.cs" type="Script" id=3]
 [ext_resource path="res://Card.tscn" type="PackedScene" id=4]
 
 [node name="Table" type="Node2D"]
 script = ExtResource( 3 )
 CardScene = ExtResource( 4 )
+EmptyColumnButtonScene = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 496, 304 )
@@ -23,76 +24,6 @@ one_shot = true
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2( -16, 16 )
-
-[node name="Sprite2" type="Sprite" parent="Node2D"]
-position = Vector2( 88, 92 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
-
-[node name="Sprite3" type="Sprite" parent="Node2D"]
-position = Vector2( 184, 93.1875 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
-
-[node name="Sprite4" type="Sprite" parent="Node2D"]
-position = Vector2( 280, 92 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
-
-[node name="Sprite5" type="Sprite" parent="Node2D"]
-position = Vector2( 376, 92 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
-
-[node name="Sprite6" type="Sprite" parent="Node2D"]
-position = Vector2( 472, 92 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
-
-[node name="Sprite7" type="Sprite" parent="Node2D"]
-position = Vector2( 568, 92 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
-
-[node name="Sprite8" type="Sprite" parent="Node2D"]
-position = Vector2( 664, 92 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
-
-[node name="Sprite9" type="Sprite" parent="Node2D"]
-position = Vector2( 760, 92 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
-
-[node name="Sprite10" type="Sprite" parent="Node2D"]
-position = Vector2( 856, 92 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
-
-[node name="Sprite11" type="Sprite" parent="Node2D"]
-position = Vector2( 952, 92 )
-scale = Vector2( 1.375, 1.375 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 128, 0, 64, 89 )
 
 [node name="CardStartPosition" type="Position2D" parent="."]
 position = Vector2( 72, 104 )
