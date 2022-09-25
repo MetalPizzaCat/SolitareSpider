@@ -33,9 +33,9 @@ text = "1"
 
 [node name="Label2" type="Label" parent="."]
 margin_left = -11.6364
-margin_top = 29.0909
+margin_top = 17.4545
 margin_right = 28.3636
-margin_bottom = 45.0909
+margin_bottom = 42.4545
 custom_fonts/font = ExtResource( 4 )
 text = "1"
 align = 2

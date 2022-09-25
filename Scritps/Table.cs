@@ -35,6 +35,7 @@ public class Table : Node2D
 	public readonly PackedScene EmptyColumnButtonScene;
 
 	private int _currentCompletionCount = 0;
+	private float _timer = 0;
 
 	private Position2D _cardStartPosition;
 	private Vector2 _cardSpawnPosition = Vector2.Zero;
@@ -62,6 +63,8 @@ public class Table : Node2D
 	private int _lastDealtCard = 0;
 	private int _initialDealColumnId = 0;
 	private int _currentlyMovedCardId = -1;
+
+	private Label _timerLabel;
 
 	private int _currentCardDealCount = 0;
 	private void _generateDeck()
@@ -254,6 +257,14 @@ public class Table : Node2D
 			GD.Print("YOU WON!");
 		}
 	}
+
+	public override void _Process(float dt)
+	{
+		base._Process(dt);
+		_timer += dt;
+		_timerLabel.Text = $"{(int)(_timer / 60) % 60}:{(int)(_timer % 60)}";
+
+	}
 	private void _checkColumn(int column)
 	{
 		for (int i = 0; i < _columns[column].Count; i++)
@@ -358,6 +369,7 @@ public class Table : Node2D
 		_animationTimer = GetNode<Timer>("DeckDealingAnimationTimer");
 		_cardStartPosition = GetNode<Position2D>("CardStartPosition");
 		_cardDealAnimTimer = GetNode<Timer>("CardDealingAnimationTimer");
+		_timerLabel = GetNode<Label>("TimeLabel");
 		_cardSpawnPosition = GetNode<Node2D>("Node2D").Position;
 		for (int i = 0; i < 10; i++)
 		{

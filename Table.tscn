@@ -1,13 +1,15 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/titan_v2 (copy).png" type="Texture" id=1]
 [ext_resource path="res://Assets/card.png" type="Texture" id=2]
 [ext_resource path="res://Scritps/Table.cs" type="Script" id=3]
 [ext_resource path="res://Card.tscn" type="PackedScene" id=4]
 [ext_resource path="res://EmptyColumnButton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Fonts/TextFont.tres" type="DynamicFont" id=6]
 
 [node name="Table" type="Node2D"]
 script = ExtResource( 3 )
+VerticalOffset = 21
 CardScene = ExtResource( 4 )
 EmptyColumnButtonScene = ExtResource( 5 )
 
@@ -129,7 +131,39 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 64, 89 )
 
 [node name="CardStartPosition" type="Position2D" parent="."]
-position = Vector2( 72, 104 )
+position = Vector2( 72, 120 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1030.0
+margin_bottom = 48.0
+color = Color( 0, 0, 0, 0.388235 )
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+margin_top = 48.0
+margin_right = 1030.0
+margin_bottom = 56.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 32.0
+margin_right = 256.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 6 )
+text = "Rules: Spiderette"
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 504.0
+margin_right = 869.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 6 )
+text = "Time:"
+
+[node name="TimeLabel" type="Label" parent="."]
+margin_left = 624.0
+margin_right = 989.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 6 )
+text = "Time:"
 
 [connection signal="timeout" from="DeckDealingAnimationTimer" to="." method="_onAnimationTimerTimeout"]
 [connection signal="timeout" from="CardDealingAnimationTimer" to="." method="_onCardDealingAnimationTimerTimeout"]
