@@ -64,7 +64,8 @@ flat = true
 [node name="FinalDestinationLocation" type="Node2D" parent="."]
 position = Vector2( 56, 536 )
 
-[node name="Sprite" type="Sprite" parent="FinalDestinationLocation"]
+[node name="Sprite1" type="Sprite" parent="FinalDestinationLocation"]
+visible = false
 position = Vector2( 10.3372, -17.5094 )
 scale = Vector2( 1.375, 1.375 )
 texture = ExtResource( 2 )
@@ -72,16 +73,56 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 64, 89 )
 
 [node name="Sprite2" type="Sprite" parent="FinalDestinationLocation"]
-position = Vector2( 18.3371, -17.5094 )
-rotation = 0.261799
+visible = false
+position = Vector2( 16, -16 )
 scale = Vector2( 1.375, 1.375 )
 texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 64, 89 )
 
 [node name="Sprite3" type="Sprite" parent="FinalDestinationLocation"]
-position = Vector2( 26.337, -17.5095 )
-rotation = -0.261799
+visible = false
+position = Vector2( 24, -16 )
+scale = Vector2( 1.375, 1.375 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 64, 89 )
+
+[node name="Sprite4" type="Sprite" parent="FinalDestinationLocation"]
+visible = false
+position = Vector2( 32, -16 )
+scale = Vector2( 1.375, 1.375 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 64, 89 )
+
+[node name="Sprite5" type="Sprite" parent="FinalDestinationLocation"]
+visible = false
+position = Vector2( 40, -16 )
+scale = Vector2( 1.375, 1.375 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 64, 89 )
+
+[node name="Sprite6" type="Sprite" parent="FinalDestinationLocation"]
+visible = false
+position = Vector2( 48, -16 )
+scale = Vector2( 1.375, 1.375 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 64, 89 )
+
+[node name="Sprite7" type="Sprite" parent="FinalDestinationLocation"]
+visible = false
+position = Vector2( 60, -16 )
+scale = Vector2( 1.375, 1.375 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 64, 89 )
+
+[node name="Sprite8" type="Sprite" parent="FinalDestinationLocation"]
+visible = false
+position = Vector2( 60, -16 )
 scale = Vector2( 1.375, 1.375 )
 texture = ExtResource( 2 )
 region_enabled = true
