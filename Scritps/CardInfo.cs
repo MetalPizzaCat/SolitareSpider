@@ -20,7 +20,7 @@ public class CardInfo
                 case CardType.Number:
                     return CardNumericalValue;
                 case CardType.Atlas:
-                    return 0;
+                    return 1;
                 case CardType.Jester:
                     return 11;
                 case CardType.Queen:
