@@ -4,3 +4,5 @@ This is a small project made in godot over the weekend purely because i wanted t
 
 ## Tech info
 Made with godot 3.5 Mono
+
+![image](https://user-images.githubusercontent.com/36876492/192133658-fd4f60e8-c85a-4ae8-904f-82f5e51c31e4.png)
