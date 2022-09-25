@@ -104,7 +104,7 @@ public class Card : Node2D
         _info = info;
         _id = id;
         ColumnId = column;
-		_revealed = revealed;
+        _revealed = revealed;
     }
     public override void _Ready()
     {
@@ -166,6 +166,13 @@ public class Card : Node2D
 
     private void _onButtonPressed()
     {
-        EmitSignal(nameof(CardPressed), _id);
+        if (Revealed)
+        {
+            EmitSignal(nameof(CardPressed), _id);
+        }
+        else
+        {
+            GD.Print("Can not select card that was not revealed");
+        }
     }
 }

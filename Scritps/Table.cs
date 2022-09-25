@@ -91,6 +91,18 @@ public class Table : Node2D
 #endif
     }
 
+    private void _spawnCard(Vector2 destination, int id, int column, bool reveal = false)
+    {
+        Card card = CardScene.Instance<Card>();
+        card.Init(_deck[id], id, column, reveal);
+        AddChild(card);
+        card.Connect(nameof(Card.CardPressed), this, nameof(_onCardPressed));
+        card.Position = _cardSpawnPosition;
+		card.MoveTo(destination);
+        _currentCards.Add(id, card);
+        _columns[column].Add(id);
+    }
+
     /// <summary>
     /// Deal cards until first 54 cards were dealt, using timers to call this function
     /// </summary>
@@ -98,14 +110,12 @@ public class Table : Node2D
     {
         if (_lastDealtCard < 54) // rules of the game define that it deals 54 cards first
         {
-            Card card = CardScene.Instance<Card>();
-            card.Init(_deck[_lastDealtCard], _lastDealtCard, _initialDealColumnId);
-            AddChild(card);
-            card.Connect(nameof(Card.CardPressed), this, nameof(_onCardPressed));
-            card.Position = _cardSpawnPosition;
-            card.MoveTo(new Vector2(_initialDealColumnId * CardWidth, (_lastDealtCard / 10) * VerticalOffset) + _cardStartPosition.Position);
-            _currentCards.Add(_lastDealtCard, card);
-            _columns[_initialDealColumnId].Add(_lastDealtCard);
+            _spawnCard
+            (
+                new Vector2(_initialDealColumnId * CardWidth, (_lastDealtCard / 10) * VerticalOffset) + _cardStartPosition.Position,
+                _lastDealtCard,
+                _initialDealColumnId
+            );
             _initialDealColumnId++;
             _lastDealtCard++;
 
@@ -308,6 +318,11 @@ public class Table : Node2D
                 return;
             }
         }
+        if (_lastDealtCard >= _deck.Count)
+        {
+            GetNode<Node2D>("Node2D").Visible = false;
+            return;
+        }
         _cardDealAnimTimer.Start();
     }
 
@@ -315,12 +330,13 @@ public class Table : Node2D
     {
         if (_currentCardDealCount < 10 && _lastDealtCard < _deck.Count)
         {
-            Card card = CardScene.Instance<Card>();
-            card.Init(_deck[_lastDealtCard], _lastDealtCard, _currentCardDealCount, true);
-            card.Position = _cardSpawnPosition;
-            card.MoveTo(new Vector2(_currentCardDealCount * CardWidth, _columns[_currentCardDealCount].Count * VerticalOffset) + _cardStartPosition.Position);
-            AddChild(card);
-            _columns[_currentCardDealCount].Add(_lastDealtCard);
+            _spawnCard
+            (
+                new Vector2(_currentCardDealCount * CardWidth, _columns[_currentCardDealCount].Count * VerticalOffset) + _cardStartPosition.Position,
+                _lastDealtCard,
+                _currentCardDealCount,
+                true
+            );
             _cardDealAnimTimer.Start();
             _lastDealtCard++;
             _currentCardDealCount++;
