@@ -29,12 +29,27 @@ public class Card : Node2D
 	[Export]
 	private bool _revealed = false;
 
+	/// <summary>
+	/// Top speed at which cards can move. To prevent cards from teleporting when moving from one side of screen to other
+	/// </summary>
+	[Export]
+	public readonly float MaxSpeed = 650f;
+
+	/// <summary>
+	/// How fast cards move on the screen
+	/// </summary>
+	[Export]
+	public readonly float TravelTime = 1f;
+
+	private float _speed = 1000f;
+
 	private bool _followsMouse = false;
 
 	private int _id = -1;
 	public int ColumnId = -1;
 
 	public int Id => _id;
+
 
 	public bool Revealed
 	{
@@ -52,6 +67,10 @@ public class Card : Node2D
 			}
 		}
 	}
+
+	private bool _moving = false;
+	private Vector2 _destination = Vector2.Zero;
+	private Vector2 _movementVector = Vector2.Zero;
 
 	private Label _debugCardNameLabel;
 	private Sprite _cardSprite;
@@ -78,6 +97,32 @@ public class Card : Node2D
 				Position = motionEvent.Position;
 			}
 		}
+	}
+
+	public override void _Process(float delta)
+	{
+		base._Process(delta);
+		if (!_moving)
+		{
+			return;
+		}
+		Position += _movementVector * _speed * delta;
+		if (Position.DistanceTo(_destination) <= 10f)
+		{
+			Position = _destination;
+			_moving = false;
+		}
+	}
+
+	/// <summary>
+	/// Starts animation for moving card to the destination
+	/// </summary>
+	public void MoveTo(Vector2 destination)
+	{
+		_moving = true;
+		_destination = destination;
+		_movementVector = (destination - Position).Normalized();
+		_speed = Mathf.Min((destination - Position).Length() / TravelTime, MaxSpeed);
 	}
 
 	private void _onMouseDown()

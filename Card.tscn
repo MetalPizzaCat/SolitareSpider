@@ -6,6 +6,8 @@
 [node name="Card" type="Node2D"]
 scale = Vector2( 1.375, 1.375 )
 script = ExtResource( 2 )
+MaxSpeed = 1000.0
+TravelTime = 0.1
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
