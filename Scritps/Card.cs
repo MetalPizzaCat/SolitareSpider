@@ -175,7 +175,7 @@ public class Card : Node2D
 
     private void _onButtonPressed()
     {
-        if (Revealed)
+        if (Revealed && !_pendingKill && !_moving)
         {
             EmitSignal(nameof(CardPressed), _id);
         }

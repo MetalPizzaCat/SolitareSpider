@@ -2,7 +2,7 @@
 	Main file of the game where most of the game logic is contained
 */
 //Uncomment this define to remove all placement validity checks
-#define DEBUG_CARD_LOOSE_CHECK
+//#define DEBUG_CARD_LOOSE_CHECK
 
 //Uncomment to make additionally cards get immediately get deleted once spawned
 //#define DEBUG_SUICIDE_CARDS
@@ -33,6 +33,8 @@ public class Table : Node2D
     public readonly PackedScene CardScene;
     [Export]
     public readonly PackedScene EmptyColumnButtonScene;
+
+    private int _currentCompletionCount = 0;
 
     private Position2D _cardStartPosition;
     private Vector2 _cardSpawnPosition = Vector2.Zero;
@@ -245,14 +247,34 @@ public class Table : Node2D
         return true;
     }
 
+    private void _checkCompletion()
+    {
+        if (_currentCompletionCount >= 8)
+        {
+            GD.Print("YOU WON!");
+        }
+    }
     private void _checkColumn(int column)
     {
         for (int i = 0; i < _columns[column].Count; i++)
         {
             if (_isFullDeck(i, column))
             {
-                //TODO: Make cards go die when deck is completed
+                for (int j = i; j < _columns[column].Count; j++)
+                {
+                    _currentCards[_columns[column][j]].MoveTo(GetNode<Node2D>("FinalDestinationLocation").Position);
+                    _currentCards[_columns[column][j]].MarkForDeletion();
+                    _currentCards.Remove(_columns[column][j]);
+                }
+                _columns[column].RemoveRange(i, _columns[column].Count - i);
+                if (_columns[column].Count > 0)
+                {
+                    _currentCards[_columns[column].Last()].Revealed = true;
+                }
+                _currentCompletionCount++;
                 GD.Print("You collected full deck!");
+                _checkCompletion();
+                return;
             }
         }
     }
